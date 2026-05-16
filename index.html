@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>URURIA 一次代理店昇格 一括発注フォーム（プラン2）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --white: #FFFFFF;
+      --off-white: #FAFAFE;
+      --lavender-bg: #F5F3FF;
+      --aurora-purple: #9B7DC0;
+      --aurora-pink: #D878B0;
+      --mid-purple: #7B6BA8;
+      --soft-pink: #E8A0C8;
+      --light-lavender: #C8B8E8;
+      --text-dark: #2D2540;
+      --text-mid: #5A4A70;
+      --text-light: #9A8AB0;
+      --border-light: rgba(200, 184, 232, 0.25);
+      --card-shadow: 0 4px 24px rgba(150, 120, 210, 0.08);
+      --gradient: linear-gradient(135deg, var(--aurora-purple), var(--aurora-pink));
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 400;
+      color: var(--text-dark);
+      background: var(--off-white);
+      line-height: 1.7;
+      letter-spacing: 0.04em;
+      -webkit-font-smoothing: antialiased;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 180px;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      background: var(--gradient);
+      padding: 32px 20px 28px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .header-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.15em;
+      margin-bottom: 4px;
+    }
+
+    .header-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.10em;
+      opacity: 0.95;
+    }
+
+    .header-plan {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      opacity: 0.95;
+      margin-top: 6px;
+    }
+
+    /* ===== Customer Info ===== */
+    .customer-info {
+      background: var(--white);
+      margin: 16px 12px;
+      padding: 20px 16px;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-light);
+    }
+
+    .customer-info-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mid-purple);
+      margin-bottom: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--light-lavender);
+      border-radius: 10px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      color: var(--text-dark);
+      background: var(--lavender-bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: var(--aurora-purple);
+    }
+
+    /* ===== Progress Bar ===== */
+    .progress-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      padding: 12px 12px 10px;
+      box-shadow: 0 2px 12px rgba(150, 120, 210, 0.1);
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+
+    .progress-amount {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--lavender-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-status {
+      font-size: 11px;
+      margin-top: 4px;
+      color: var(--text-light);
+      text-align: right;
+    }
+
+    .progress-status.achieved {
+      color: var(--aurora-purple);
+      font-weight: 500;
+    }
+
+    /* ===== Section ===== */
+    .section {
+      margin: 16px 12px;
+    }
+
+    .section-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mid-purple);
+      margin-bottom: 2px;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    /* ===== Product Card ===== */
+    .product-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-light);
+      transition: border-color 0.2s;
+    }
+
+    .product-card.active {
+      border-color: var(--light-lavender);
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .product-prices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      margin-bottom: 12px;
+    }
+
+    .price-row {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .price-label {
+      margin-right: 4px;
+    }
+
+    .price-value {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .price-tax {
+      font-size: 10px;
+      color: var(--text-light);
+    }
+
+    .product-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .qty-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .qty-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--light-lavender);
+      background: var(--lavender-bg);
+      color: var(--mid-purple);
+      font-size: 20px;
+      font-weight: 400;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .qty-btn:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    .qty-btn:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+
+    .qty-btn:active {
+      background: var(--light-lavender);
+    }
+
+    .qty-btn.disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .qty-display {
+      width: 48px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-dark);
+      border-top: 1px solid var(--light-lavender);
+      border-bottom: 1px solid var(--light-lavender);
+      background: var(--white);
+    }
+
+    .product-subtotal {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--aurora-purple);
+      opacity: 0;
+      transition: opacity 0.2s;
+      text-align: right;
+      min-width: 100px;
+    }
+
+    .product-subtotal.visible {
+      opacity: 1;
+    }
+
+    .product-subtotal-label {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 400;
+    }
+
+    /* ===== Fixed Footer ===== */
+    .footer-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: var(--white);
+      box-shadow: 0 -4px 20px rgba(150, 120, 210, 0.12);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .footer-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 12px 16px;
+    }
+
+    .footer-totals {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .footer-total-label {
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .footer-total-amounts {
+      text-align: right;
+    }
+
+    .footer-total-excl {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .footer-total-excl-unit {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-light);
+      margin-left: 2px;
+    }
+
+    .footer-total-incl {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .confirm-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--gradient);
+      color: var(--white);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .confirm-btn:active {
+      transform: scale(0.98);
+    }
+
+    .confirm-btn:disabled {
+      background: #d0c8e0;
+      cursor: default;
+      opacity: 0.7;
+    }
+
+    .confirm-btn:disabled:active {
+      transform: none;
+    }
+
+    .remaining-text {
+      text-align: center;
+      font-size: 12px;
+      color: var(--aurora-pink);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ===== Confirmation View ===== */
+    #confirmView {
+      display: none;
+    }
+
+    .confirm-header {
+      background: var(--gradient);
+      padding: 14px 20px 12px;
+      text-align: center;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .confirm-header-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.15em;
+    }
+
+    .confirm-header-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+    }
+
+    .confirm-date {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .confirm-body {
+      padding: 10px 10px;
+    }
+
+    .confirm-customer {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-light);
+    }
+
+    .confirm-customer-row {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .confirm-customer-label {
+      color: var(--text-light);
+      white-space: nowrap;
+      min-width: 60px;
+    }
+
+    .confirm-customer-value {
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .confirm-section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mid-purple);
+      margin: 16px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .confirm-table {
+      width: 100%;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-light);
+      margin-bottom: 12px;
+    }
+
+    .confirm-table-header {
+      display: grid;
+      grid-template-columns: 1fr 80px 32px 80px;
+      padding: 6px 10px;
+      background: var(--lavender-bg);
+      font-size: 10px;
+      color: var(--text-light);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .confirm-table-header span:nth-child(n+2) {
+      text-align: right;
+    }
+
+    .confirm-table-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 32px 80px;
+      padding: 7px 10px;
+      font-size: 12px;
+      border-top: 1px solid var(--border-light);
+      align-items: center;
+    }
+
+    .confirm-table-row:first-child {
+      border-top: none;
+    }
+
+    .confirm-row-name {
+      color: var(--text-dark);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .confirm-row-price,
+    .confirm-row-qty,
+    .confirm-row-subtotal {
+      text-align: right;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      color: var(--text-mid);
+    }
+
+    .confirm-row-subtotal {
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .confirm-totals {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin: 10px 0;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-light);
+    }
+
+    .confirm-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 2px 0;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .confirm-total-row span:last-child {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+    }
+
+    .confirm-total-row.grand {
+      padding-top: 6px;
+      margin-top: 4px;
+      border-top: 2px solid var(--light-lavender);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .confirm-total-row.grand span:last-child {
+      font-size: 20px;
+      font-weight: 600;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .confirm-notice {
+      text-align: center;
+      margin: 10px 0 8px;
+      padding: 10px;
+      background: var(--lavender-bg);
+      border-radius: 10px;
+      border: 1px dashed var(--light-lavender);
+    }
+
+    .confirm-notice p {
+      font-size: 12px;
+      color: var(--mid-purple);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .confirm-notice .small {
+      font-size: 10px;
+      color: var(--text-light);
+      font-weight: 400;
+      margin-top: 4px;
+    }
+
+    .back-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--light-lavender);
+      border-radius: 12px;
+      background: var(--white);
+      color: var(--mid-purple);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      text-align: center;
+      margin: 12px 0 24px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media print {
+      .back-btn,
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        padding-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== ORDER VIEW ===== -->
+<div id="orderView">
+  <div class="header">
+    <div class="header-logo">URURIA</div>
+    <div class="header-title">一次代理店昇格 一括発注フォーム</div>
+    <div class="header-plan">最低発注金額 ¥6,500,000（税抜）</div>
+  </div>
+
+  <div class="customer-info">
+    <div class="customer-info-title">お客様情報</div>
+    <div class="input-group">
+      <label>サロン名</label>
+      <input type="text" id="salonName" placeholder="サロン名を入力してください">
+    </div>
+    <div class="input-group">
+      <label>ご担当者名</label>
+      <input type="text" id="customerName" placeholder="お名前を入力してください">
+    </div>
+    <div class="input-group">
+      <label>請求書宛名</label>
+      <input type="text" id="invoiceName" placeholder="請求書宛名を入力してください">
+    </div>
+  </div>
+
+  <div class="progress-wrapper">
+    <div class="progress-text">
+      <span>最低発注金額（税抜）</span>
+      <span class="progress-amount"><span id="progressCurrent">¥0</span> / ¥6,500,000</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-status" id="progressStatus">あと ¥6,500,000</div>
+  </div>
+
+  <!-- マシン -->
+  <div class="section">
+    <div class="section-eyebrow">Machine</div>
+    <div class="section-title">マシン</div>
+    <div id="machineProducts"></div>
+  </div>
+
+  <!-- 施術用化粧品 -->
+  <div class="section">
+    <div class="section-eyebrow">Professional</div>
+    <div class="section-title">施術用化粧品</div>
+    <div id="professionalProducts"></div>
+  </div>
+
+  <!-- ホームケア化粧品 -->
+  <div class="section">
+    <div class="section-eyebrow">Home Care</div>
+    <div class="section-title">ホームケア化粧品</div>
+    <div id="homecareProducts"></div>
+  </div>
+
+  <!-- 製品パーツ -->
+  <div class="section">
+    <div class="section-eyebrow">Parts</div>
+    <div class="section-title">製品パーツ（it Liftカートリッジ）</div>
+    <div id="partsProducts"></div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-inner">
+      <div class="footer-totals">
+        <span class="footer-total-label">ご発注合計</span>
+        <div class="footer-total-amounts">
+          <div>
+            <span class="footer-total-excl" id="totalExcl">¥0</span>
+            <span class="footer-total-excl-unit">（税抜）</span>
+          </div>
+          <div class="footer-total-incl" id="totalIncl">税込 ¥0</div>
+          <div style="font-size:10px; color:var(--text-light);">※送料は別途請求いたします</div>
+        </div>
+      </div>
+      <button class="confirm-btn" id="confirmBtn" disabled onclick="showConfirmation()">
+        発注内容を確認する
+      </button>
+      <div class="remaining-text" id="remainingText">あと ¥6,500,000 で発注可能</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONFIRMATION VIEW ===== -->
+<div id="confirmView">
+  <div class="confirm-header">
+    <div class="confirm-header-logo">URURIA</div>
+    <div class="confirm-header-title">ご発注内容確認</div>
+    <div class="confirm-date" id="confirmDate"></div>
+  </div>
+
+  <div class="confirm-body">
+    <div class="confirm-customer" id="confirmCustomer"></div>
+    <div id="confirmProducts"></div>
+    <div class="confirm-totals" id="confirmTotals"></div>
+
+    <p style="text-align:center; font-size:12px; color:var(--text-light); margin:12px 0 4px;">※送料は別途請求いたします</p>
+
+    <div class="confirm-notice">
+      <p>こちらの画面をスクリーンショットして<br>担当者にお送りください</p>
+      <p class="small">URURIA をお選びいただきありがとうございます</p>
+    </div>
+
+    <button class="back-btn no-print" onclick="backToOrder()">← 戻って修正する</button>
+  </div>
+</div>
+
+<script>
+  const TAX_RATE = 0.10;
+  const MIN_ORDER = 6500000;
+
+  const products = [
+    // マシン
+    { id: 'plasmania', name: 'plasmania', price: 590000, category: 'machine', unit: null },
+    { id: 'it-lift', name: 'it Lift', price: 900000, category: 'machine', unit: null },
+    // 施術用化粧品
+    { id: 'ampoul-lift', name: 'アンプルマニアリフト', price: 18000, category: 'professional', unit: '1箱10本入り（約30名施術相当）' },
+    { id: 'ampoul-white', name: 'アンプルマニアホワイト', price: 18000, category: 'professional', unit: '1箱10本入り（約30名施術相当）' },
+    { id: 'ampoul-soothing', name: 'アンプルマニアスージング', price: 18000, category: 'professional', unit: '1箱10本入り（約30名施術相当）' },
+    { id: 'ampoul-assort', name: 'アンプルマニアアソート（リフトアンプル・スージングアンプル・ホワイトアンプル）', price: 18000, category: 'professional', unit: '10ml×各種3本 計9本入り' },
+    { id: 'softening-water', name: 'ソフトニングウォーター', price: 8000, category: 'professional', unit: '1本 500ml' },
+    { id: 'baby-exo', name: 'ベイビーエクソBABY-EXO', price: 8250, category: 'professional', unit: '1箱3本入り（約9名施術相当）' },
+    { id: 'bio-cellulose', name: 'バイオセルロースパック', price: 12000, category: 'professional', unit: '1袋個包装10枚入り' },
+    { id: 'lip-plumper', name: 'LIP PLUMPER', price: 2520, category: 'professional', unit: null },
+    { id: 'lip-balm', name: 'LIP BALM', price: 1800, category: 'professional', unit: null },
+    // ホームケア化粧品
+    { id: 'hc-baby-exo', name: 'BABY-EXOフェイスパック', price: 4130, category: 'homecare', unit: '1袋個包装10枚入り' },
+    { id: 'hc-recovery-serum', name: 'スーパーリカバリーセラム', price: 4130, category: 'homecare', unit: '33ml' },
+    { id: 'hc-ampoul-lift', name: 'アンプルマニアHOMEリフト', price: 4200, category: 'homecare', unit: '美容液20ml×1本 + パウダー0.5g×1本' },
+    { id: 'hc-ampoul-white', name: 'アンプルマニアHOMEホワイト', price: 4200, category: 'homecare', unit: '美容液20ml×1本 + パウダー0.5g×1本' },
+    { id: 'hc-ampoul-soothing', name: 'アンプルマニアHOMEスージング', price: 4200, category: 'homecare', unit: '美容液20ml×1本 + パウダー0.5g×1本' },
+    // 製品パーツ（it Liftカートリッジ）
+    { id: 'cart-1-5', name: 'it Liftカートリッジ1.5', price: 25000, category: 'parts', unit: null },
+    { id: 'cart-3-0', name: 'it Liftカートリッジ3.0', price: 25000, category: 'parts', unit: null },
+    { id: 'cart-4-5', name: 'it Liftカートリッジ4.5', price: 25000, category: 'parts', unit: null },
+    { id: 'cart-6-0', name: 'it Liftカートリッジ6.0', price: 25000, category: 'parts', unit: null },
+    { id: 'cart-13-0', name: 'it Liftカートリッジ13.0', price: 25000, category: 'parts', unit: null },
+  ];
+
+  const categoryContainers = {
+    machine: 'machineProducts',
+    professional: 'professionalProducts',
+    homecare: 'homecareProducts',
+    parts: 'partsProducts'
+  };
+
+  const state = {};
+  products.forEach(p => state[p.id] = 0);
+
+  function formatPrice(n) {
+    return '¥' + n.toLocaleString('ja-JP');
+  }
+
+  function renderProducts() {
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.id = 'card-' + p.id;
+
+      const priceHTML = `
+        <div class="price-row">
+          <span class="price-label">代理店価格</span>
+          <span class="price-value">${formatPrice(p.price)}</span>
+          <span class="price-tax">（税抜）</span>
+          <span class="price-value" style="margin-left:6px">${formatPrice(Math.round(p.price * (1 + TAX_RATE)))}</span>
+          <span class="price-tax">（税込）</span>
+        </div>
+      `;
+
+      card.innerHTML = `
+        <div class="product-name">${p.name}${p.unit ? `<span style="font-size:11px; color:var(--text-light); font-weight:400; margin-left:6px;">${p.unit}</span>` : ''}</div>
+        <div class="product-prices">${priceHTML}</div>
+        <div class="product-controls">
+          <div class="qty-wrapper">
+            <button class="qty-btn disabled" id="minus-${p.id}" onclick="changeQty('${p.id}', -1)">−</button>
+            <div class="qty-display" id="qty-${p.id}">0</div>
+            <button class="qty-btn" onclick="changeQty('${p.id}', 1)">+</button>
+          </div>
+          <div class="product-subtotal" id="subtotal-${p.id}">
+            <span class="product-subtotal-label">小計 </span>${formatPrice(0)}
+          </div>
+        </div>
+      `;
+
+      document.getElementById(categoryContainers[p.category]).appendChild(card);
+    });
+  }
+
+  function changeQty(id, delta) {
+    const newQty = Math.max(0, state[id] + delta);
+    state[id] = newQty;
+
+    document.getElementById('qty-' + id).textContent = newQty;
+
+    const minusBtn = document.getElementById('minus-' + id);
+    if (newQty === 0) {
+      minusBtn.classList.add('disabled');
+    } else {
+      minusBtn.classList.remove('disabled');
+    }
+
+    const card = document.getElementById('card-' + id);
+    if (newQty > 0) {
+      card.classList.add('active');
+    } else {
+      card.classList.remove('active');
+    }
+
+    recalculate();
+  }
+
+  function recalculate() {
+    let totalExcl = 0;
+
+    products.forEach(p => {
+      const qty = state[p.id];
+      const subtotal = qty * p.price;
+      totalExcl += subtotal;
+
+      const subtotalEl = document.getElementById('subtotal-' + p.id);
+      if (qty > 0) {
+        subtotalEl.classList.add('visible');
+        subtotalEl.innerHTML = `<span class="product-subtotal-label">小計 </span>${formatPrice(subtotal)}`;
+      } else {
+        subtotalEl.classList.remove('visible');
+      }
+    });
+
+    const tax = Math.round(totalExcl * TAX_RATE);
+    const totalIncl = totalExcl + tax;
+
+    document.getElementById('totalExcl').textContent = formatPrice(totalExcl);
+    document.getElementById('totalIncl').textContent = '税込 ' + formatPrice(totalIncl);
+
+    const pct = Math.min(100, (totalExcl / MIN_ORDER) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCurrent').textContent = formatPrice(totalExcl);
+
+    const remaining = MIN_ORDER - totalExcl;
+    const progressStatus = document.getElementById('progressStatus');
+    const remainingText = document.getElementById('remainingText');
+    const confirmBtn = document.getElementById('confirmBtn');
+
+    const salonVal = document.getElementById('salonName').value.trim();
+    const nameVal = document.getElementById('customerName').value.trim();
+    const invoiceVal = document.getElementById('invoiceName').value.trim();
+    const infoFilled = salonVal && nameVal && invoiceVal;
+
+    if (remaining <= 0 && infoFilled) {
+      progressStatus.textContent = '最低発注金額クリア';
+      progressStatus.classList.add('achieved');
+      confirmBtn.disabled = false;
+      remainingText.style.display = 'none';
+    } else {
+      progressStatus.classList.remove('achieved');
+      confirmBtn.disabled = true;
+
+      if (remaining > 0) {
+        progressStatus.textContent = 'あと ' + formatPrice(remaining);
+        remainingText.style.display = 'block';
+        remainingText.textContent = !infoFilled
+          ? 'あと ' + formatPrice(remaining) + '＋お客様情報を入力'
+          : 'あと ' + formatPrice(remaining) + ' で発注可能';
+      } else {
+        progressStatus.textContent = '最低発注金額クリア';
+        remainingText.style.display = 'block';
+        remainingText.textContent = 'お客様情報を入力してください';
+      }
+    }
+  }
+
+  function showConfirmation() {
+    const salonName = document.getElementById('salonName').value || '未入力';
+    const customerName = document.getElementById('customerName').value || '未入力';
+    const invoiceName = document.getElementById('invoiceName').value || '未入力';
+
+    const now = new Date();
+    const dateStr = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+    document.getElementById('confirmDate').textContent = dateStr;
+
+    document.getElementById('confirmCustomer').innerHTML = `
+      <div class="confirm-customer-row">
+        <span class="confirm-customer-label">サロン名</span>
+        <span class="confirm-customer-value">${escapeHTML(salonName)}</span>
+      </div>
+      <div class="confirm-customer-row">
+        <span class="confirm-customer-label">ご担当者</span>
+        <span class="confirm-customer-value">${escapeHTML(customerName)}</span>
+      </div>
+      <div class="confirm-customer-row">
+        <span class="confirm-customer-label">請求書宛名</span>
+        <span class="confirm-customer-value">${escapeHTML(invoiceName)}</span>
+      </div>
+    `;
+
+    const categoryNames = {
+      machine: 'マシン',
+      professional: '施術用化粧品',
+      homecare: 'ホームケア化粧品',
+      parts: '製品パーツ'
+    };
+
+    const categoryOrder = ['machine', 'professional', 'homecare', 'parts'];
+    let confirmHTML = '';
+    let totalExcl = 0;
+
+    categoryOrder.forEach(cat => {
+      const catProducts = products.filter(p => p.category === cat && state[p.id] > 0);
+      if (catProducts.length === 0) return;
+
+      let rows = '';
+      catProducts.forEach(p => {
+        const qty = state[p.id];
+        const subtotal = qty * p.price;
+        totalExcl += subtotal;
+        rows += `
+          <div class="confirm-table-row">
+            <span class="confirm-row-name">${p.name}</span>
+            <span class="confirm-row-price">${formatPrice(p.price)}</span>
+            <span class="confirm-row-qty">${qty}</span>
+            <span class="confirm-row-subtotal">${formatPrice(subtotal)}</span>
+          </div>
+        `;
+      });
+
+      confirmHTML += `
+        <div class="confirm-section-title">${categoryNames[cat]}</div>
+        <div class="confirm-table">
+          <div class="confirm-table-header">
+            <span>商品名</span><span>単価</span><span>数量</span><span>小計</span>
+          </div>
+          ${rows}
+        </div>
+      `;
+    });
+
+    document.getElementById('confirmProducts').innerHTML = confirmHTML;
+
+    const tax = Math.round(totalExcl * TAX_RATE);
+    const totalIncl = totalExcl + tax;
+    document.getElementById('confirmTotals').innerHTML = `
+      <div class="confirm-total-row">
+        <span>税抜合計</span>
+        <span>${formatPrice(totalExcl)}</span>
+      </div>
+      <div class="confirm-total-row">
+        <span>消費税（10%）</span>
+        <span>${formatPrice(tax)}</span>
+      </div>
+      <div class="confirm-total-row grand">
+        <span>税込合計</span>
+        <span>${formatPrice(totalIncl)}</span>
+      </div>
+    `;
+
+    document.getElementById('orderView').style.display = 'none';
+    document.getElementById('confirmView').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function backToOrder() {
+    document.getElementById('confirmView').style.display = 'none';
+    document.getElementById('orderView').style.display = 'block';
+  }
+
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  renderProducts();
+  recalculate();
+
+  document.querySelectorAll('#salonName, #customerName, #invoiceName').forEach(el => {
+    el.addEventListener('input', recalculate);
+  });
+</script>
+
+</body>
+</html>
